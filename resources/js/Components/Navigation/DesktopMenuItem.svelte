@@ -9,9 +9,9 @@
 
 <a href={url}
    use:inertia
-   class={['px-3 py-2 rounded-md text-sm font-medium',
-   exactMatch ? ($page.url === url ? 'bg-gray-900 text-white' : 'text-gray-300 hover:text-gray-100') : '',
-   !exactMatch ? ($page.url.startsWith(url) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:text-gray-100') : '',
+   class={['w-full text-left px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700',
+   exactMatch ? ($page.url === url ? 'bg-gray-700 text-white' : 'text-gray-300') : '',
+   !exactMatch ? ($page.url.startsWith(url) ? 'bg-gray-700 text-white' : 'text-gray-300') : '',
    $$restProps.class].join(' ').trim()}
    aria-current="page">
     {title}
