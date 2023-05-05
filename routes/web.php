@@ -6,6 +6,7 @@ use App\Http\Controllers\LinkController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\GroupTreeController;
 use App\Http\Controllers\ViewControllers\HomeViewController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('tags', TagController::class)->except([
         'create', 'edit',
     ]);
+
+    Route::get('grouptree', [GroupTreeController::class, 'index']);
+    Route::get('grouptree/{group}', [GroupTreeController::class, 'list']);
 
     Route::resource('groups', GroupController::class)->except([
         'create', 'edit',
