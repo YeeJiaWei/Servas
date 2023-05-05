@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4dbf3f30d2f113654191457ae00d8f8",
+    "content-hash": "6540de67259917de02107d55092a524a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6093,16 +6093,16 @@
         },
         {
             "name": "spatie/laravel-searchable",
-            "version": "dev-main",
+            "version": "1.11.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/beromir/laravel-searchable.git",
-                "reference": "4e53c20aa9e6174040a23a1a544642edbf7aae7a"
+                "url": "https://github.com/spatie/laravel-searchable.git",
+                "reference": "63dea0cf4f817571933b193ba5a43bf499e53f78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beromir/laravel-searchable/zipball/4e53c20aa9e6174040a23a1a544642edbf7aae7a",
-                "reference": "4e53c20aa9e6174040a23a1a544642edbf7aae7a",
+                "url": "https://api.github.com/repos/spatie/laravel-searchable/zipball/63dea0cf4f817571933b193ba5a43bf499e53f78",
+                "reference": "63dea0cf4f817571933b193ba5a43bf499e53f78",
                 "shasum": ""
             },
             "require": {
@@ -6115,26 +6115,13 @@
                 "orchestra/testbench": "^6.27|^7.0|^8.0",
                 "phpunit/phpunit": "^9.3"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Spatie\\Searchable\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Spatie\\Searchable\\Tests\\": "tests"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit"
-                ],
-                "test-coverage": [
-                    "vendor/bin/phpunit --coverage-html coverage"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -6159,15 +6146,16 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/beromir/laravel-searchable/tree/main"
+                "issues": "https://github.com/spatie/laravel-searchable/issues",
+                "source": "https://github.com/spatie/laravel-searchable/tree/1.11.2"
             },
             "funding": [
                 {
-                    "type": "custom",
-                    "url": "https://spatie.be/open-source/support-us"
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
                 }
             ],
-            "time": "2023-04-30T09:19:44+00:00"
+            "time": "2023-01-24T23:15:11+00:00"
         },
         {
             "name": "spatie/laravel-tags",
@@ -10159,9 +10147,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "spatie/laravel-searchable": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
