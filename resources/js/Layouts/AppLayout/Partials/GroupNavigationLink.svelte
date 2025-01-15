@@ -1,10 +1,10 @@
 <script>
-    import {Link, page} from "@inertiajs/svelte";
-    import {route} from "@/utils/index.js";
-    import {fade} from "svelte/transition";
-    import clsx from "clsx";
-    import {getOpenedGroups, toggleOpenedGroup} from "@/utils/local-settings.js";
-    import {closeSidebar} from "@/utils/sidebar.js";
+    import { Link, page } from '@inertiajs/svelte';
+    import { route } from '@/utils/index.js';
+    import { fade } from 'svelte/transition';
+    import clsx from 'clsx';
+    import { getOpenedGroups, toggleOpenedGroup } from '@/utils/local-settings.js';
+    import { closeSidebar } from '@/utils/sidebar.js';
 
     export let group = null;
     export let groups = [];
@@ -28,7 +28,8 @@
         </button>
 
         <Link href={route('groups.show', group.id)} on:click={closeSidebar}
-              class={clsx('flex justify-between items-center ml-1 py-1.5 px-3 w-full text-sm text-white font-medium truncate rounded-md hover:bg-white/10 dark:hover:bg-gray-700/60', currentGroupId === group.id && 'bg-white/10 dark:bg-gray-700/60')}>
+              class={clsx('group-item flex justify-between items-center ml-1 py-1.5 px-3 w-full text-sm text-white font-medium truncate rounded-md hover:bg-white/10 dark:hover:bg-gray-700/60', currentGroupId === group.id && 'bg-white/10 dark:bg-gray-700/60')}
+              data-group-id={group.id}>
             {group.title}
 
             {#if group.linksCount}

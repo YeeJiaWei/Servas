@@ -32,6 +32,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('links/{link}/favicon', [\App\Http\Controllers\FaviconController::class, 'show'])
         ->name('link.favicon');
 
+    Route::post('links/{link}/collection', [LinkController::class, 'updateCollection'])
+        ->name('link.collection.move');
     Route::resource('links', LinkController::class)->except([
         'create', 'edit',
     ]);

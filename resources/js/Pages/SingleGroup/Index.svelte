@@ -1,20 +1,20 @@
 <script context="module">
-    import AppLayout, {title, showHeader} from "@/Layouts/AppLayout/AppLayout.svelte";
+    import AppLayout, { title, showHeader } from '@/Layouts/AppLayout/AppLayout.svelte';
 
     export const layout = AppLayout;
 </script>
 
 <script>
-    import {onDestroy} from 'svelte';
-    import {dispatchCustomEvent, route} from "@/utils";
-    import Main from "@/Layouts/AppLayout/Partials/Main.svelte";
-    import DropdownItem from "@/Components/Dropdowns/DropdownItem.svelte";
-    import Dropdown from "@/Components/Dropdowns/Dropdown.svelte";
-    import InnerDropdownSection from "@/Components/Dropdowns/InnerDropdownSection.svelte";
-    import LinkListWithTagFilter from "@/Components/LinkList/LinkListWithTagFilter.svelte";
-    import {router} from "@inertiajs/svelte";
-    import Modal from "@/Components/Modals/Modal.svelte";
-    import Button from "@/Components/Buttons/Button.svelte";
+    import { onDestroy, onMount } from 'svelte';
+    import { dispatchCustomEvent, route } from '@/utils';
+    import Main from '@/Layouts/AppLayout/Partials/Main.svelte';
+    import DropdownItem from '@/Components/Dropdowns/DropdownItem.svelte';
+    import Dropdown from '@/Components/Dropdowns/Dropdown.svelte';
+    import InnerDropdownSection from '@/Components/Dropdowns/InnerDropdownSection.svelte';
+    import LinkListWithTagFilter from '@/Components/LinkList/LinkListWithTagFilter.svelte';
+    import { router } from '@inertiajs/svelte';
+    import Modal from '@/Components/Modals/Modal.svelte';
+    import Button from '@/Components/Buttons/Button.svelte';
 
     export let group = {};
     export let links = [];
@@ -42,14 +42,14 @@
             only: ['publicLink'],
             onSuccess: () => {
                 showPublicLinkModal = true;
-            }
+            },
         });
     }
 
     function showPublicLinkDeleteModal() {
         showPublicLinkModal = false;
 
-        dispatchCustomEvent('deletePublicLink', {id: publicLink.id, title: group.title});
+        dispatchCustomEvent('deletePublicLink', { id: publicLink.id, title: group.title });
     }
 
     function copyLink(link) {
@@ -61,6 +61,100 @@
 
     onDestroy(() => {
         $showHeader = true;
+    });
+
+    let linkIdRef, groupIdRef;
+    let isDraggingLink = false;
+
+    onMount(() => {
+        const addDragEventListeners = () => {
+            window.addEventListener('dragover', handleDragOver, false);
+            window.addEventListener('dragenter', handleDragEnter);
+            window.addEventListener('dragleave', handleDragLeave);
+            window.addEventListener('dragend', handleDragEnd);
+        };
+        const removeDragEventListeners = () => {
+            window.removeEventListener('dragover', handleDragOver, false);
+            window.removeEventListener('dragenter', handleDragEnter);
+            window.removeEventListener('dragleave', handleDragLeave);
+            window.removeEventListener('dragend', handleDragEnd);
+        };
+
+        const handleDrag = (event) => {
+            const element = event.target.closest('.link-item') || null;
+
+            if (!element) return;
+
+            const linkId = element.dataset.linkId;
+
+            if (!linkId) return;
+
+            linkIdRef = parseInt(linkId);
+            isDraggingLink = true;
+
+            addDragEventListeners();
+        };
+
+        const handleDragOver = (event) => {
+            if (!isDraggingLink) return;
+            event.preventDefault();
+        };
+
+        const handleDragEnter = (event) => {
+            const element = event.target.closest('.group-item') || null;
+
+            if (!element) return;
+
+            const groupId = element.dataset.groupId;
+
+            if (!groupId) return;
+
+            groupIdRef = parseInt(groupId);
+
+            // add active style to current element
+            if (element.classList.contains('bg-gray-600')) return;
+
+            element.classList.add('bg-gray-600');
+        };
+
+        const handleDragLeave = (event) => {
+            const element = event.target.closest('.group-item') || null;
+
+            if (!element) return;
+
+            // remove active style to current element
+            if (!element.classList.contains('bg-gray-600')) return;
+
+            element.classList.remove('bg-gray-600');
+        };
+
+        const handleDragEnd = async (event) => {
+            try {
+                const response = await axios.post(route('link.collection.move', { link: linkIdRef }), {
+                    group_id: groupIdRef,
+                });
+            } catch (error) {
+                console.log(error);
+            }
+
+            document.querySelector(`.link-item[data-link-id="${linkIdRef}"]`).remove();
+
+            linkIdRef = null;
+            groupIdRef = null;
+
+            // remove all active styles
+            document.querySelectorAll('.group-item.bg-gray-600')
+                .forEach((element) => element.classList.remove('bg-gray-600'));
+
+            removeDragEventListeners();
+        };
+
+        window.addEventListener('dragstart', handleDrag);
+
+        return () => {
+            // this function is called when the component is destroyed
+            window.removeEventListener('dragstart', handleDrag);
+        };
     });
 </script>
 
@@ -112,7 +206,8 @@
         </div>
 
         {#if publicLink.id}
-            <Button on:clicked={() => showPublicLinkModal = true} color="white" hoverTitle="Public link" class="ml-4 !w-auto">
+            <Button on:clicked={() => showPublicLinkModal = true} color="white" hoverTitle="Public link"
+                    class="ml-4 !w-auto">
                 <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path
                         d="M12.232 4.232a2.5 2.5 0 0 1 3.536 3.536l-1.225 1.224a.75.75 0 0 0 1.061 1.06l1.224-1.224a4 4 0 0 0-5.656-5.656l-3 3a4 4 0 0 0 .225 5.865.75.75 0 0 0 .977-1.138 2.5 2.5 0 0 1-.142-3.667l3-3Z"/>

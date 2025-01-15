@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\WebpageData;
+use App\Http\Requests\Link\LinkGroupUpdateRequest;
 use App\Http\Requests\StoreLinkRequest;
 use App\Http\Requests\UpdateLinkRequest;
 use App\Models\Group;
 use App\Models\Link;
 use App\Services\Models\GroupService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,8 +22,7 @@ class LinkController extends Controller
 {
     public function __construct(
         protected GroupService $groupService,
-    )
-    {
+    ) {
         //
     }
 
@@ -149,6 +150,15 @@ class LinkController extends Controller
         $link->syncTags($tags);
 
         $this->groupService->updateUserGroupsLinkCount(Auth::user());
+    }
+
+    public function updateCollection(LinkGroupUpdateRequest $request, Link $link): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $link->groups()->sync([$validated['group_id']]);
+
+        return response()->json([$validated, $link]);
     }
 
     /**
